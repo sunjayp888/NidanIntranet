@@ -41,7 +41,7 @@ namespace Nidan.Business.Interfaces
         Enquiry RetrieveEnquiry(int organisationId, int id);
 
         // Update
-        void UploadPhoto(int organisationId, int personnelId, byte[] photo);
+        //void UploadPhoto(int organisationId, int personnelId, byte[] photo);
         Personnel UpdatePersonnel(int organisationId, Personnel personnel);
         Enquiry UpdateEnquiry(int organisationId, Enquiry enquiry);
         Mobilization UpdateMobilization(int organisationId, Mobilization mobilization);

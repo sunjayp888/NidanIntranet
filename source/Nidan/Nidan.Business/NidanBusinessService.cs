@@ -22,7 +22,7 @@ namespace Nidan.Business
         private ICacheProvider _cacheProvider;
         private ITemplateService _templateService;
         private IEmailService _emailService;
-        private IDocumentServiceRestClient _documentServiceAPI;
+     //   private IDocumentServiceRestClient _documentServiceAPI;
         private enum ShowColour { Company = 1, Division, Department };
         private const string OrganisationCacheKey = "Organisations";
         private const string OrganisationEmploymentsTreeKey = "OrganisationEmploymentsTree";
@@ -31,13 +31,13 @@ namespace Nidan.Business
         readonly string PersonnelPhotoKey = "PersonnelPhoto";
         readonly string PersonnelProfileCategory = "ProfileImage";
 
-        public NidanBusinessService(INidanDataService nidanDataService, ICacheProvider cacheProvider, ITemplateService templateService, IEmailService emailService, IDocumentServiceRestClient documentServiceAPI)
+        public NidanBusinessService(INidanDataService nidanDataService, ICacheProvider cacheProvider, ITemplateService templateService, IEmailService emailService)
         {
             _nidanDataService = nidanDataService;
             _cacheProvider = cacheProvider;
             _templateService = templateService;
             _emailService = emailService;
-            _documentServiceAPI = documentServiceAPI;
+            //_documentServiceAPI = documentServiceAPI;
         }
 
         #region // Create
@@ -183,31 +183,31 @@ namespace Nidan.Business
             return _nidanDataService.RetrieveColours(p => true);
         }
 
-        private Document RetrieveDocument(int organisationId, int personnelId)
-        {
-            var organisation = RetrieveOrganisation(organisationId);
-            return _documentServiceAPI.RetrieveDocuments(organisation.Name, PersonnelProfileCategory,
-                                new DocumentAttribute
-                                {
-                                    Key = PersonnelPhotoKey,
-                                    Value = personnelId.ToString()
-                                }).FirstOrDefault();
-        }
+        //private Document RetrieveDocument(int organisationId, int personnelId)
+        //{
+        //    var organisation = RetrieveOrganisation(organisationId);
+        //    return _documentServiceAPI.RetrieveDocuments(organisation.Name, PersonnelProfileCategory,
+        //                        new DocumentAttribute
+        //                        {
+        //                            Key = PersonnelPhotoKey,
+        //                            Value = personnelId.ToString()
+        //                        }).FirstOrDefault();
+        //}
 
-        public string RetrievePhoto(int organisationId, int personnelId)
-        {
+        //public string RetrievePhoto(int organisationId, int personnelId)
+        //{
 
-            var document = RetrieveDocument(organisationId, personnelId);
+        //    var document = RetrieveDocument(organisationId, personnelId);
 
-            if (document == null)
-            {
-                return string.Empty;
-            }
+        //    if (document == null)
+        //    {
+        //        return string.Empty;
+        //    }
 
-            var documentBytes = _documentServiceAPI.Download(document.DocumentGuid);
+        //    var documentBytes = _documentServiceAPI.Download(document.DocumentGuid);
 
-            return documentBytes.Bytes;
-        }
+        //    return documentBytes.Bytes;
+        //}
 
         public Organisation RetrieveOrganisation(int organisationId)
         {
@@ -318,38 +318,38 @@ namespace Nidan.Business
 
         #region // Update
 
-        public void UploadPhoto(int organisationId, int personnelId, byte[] photo)
-        {
-            var personnel = _nidanDataService.RetrievePersonnel(organisationId, personnelId, x => true);
-            var organisation = RetrieveOrganisation(organisationId);
-            var document = RetrieveDocument(organisationId, personnelId);
+        //public void UploadPhoto(int organisationId, int personnelId, byte[] photo)
+        //{
+        //    var personnel = _nidanDataService.RetrievePersonnel(organisationId, personnelId, x => true);
+        //    var organisation = RetrieveOrganisation(organisationId);
+        //    var document = RetrieveDocument(organisationId, personnelId);
 
-            if (document != null)
-            {
-                //DeletePhoto(document.DocumentGuid);
-            }
+        //    if (document != null)
+        //    {
+        //        //DeletePhoto(document.DocumentGuid);
+        //    }
 
-            _documentServiceAPI.CreateDocument(
-                        new Document
-                        {
-                            Product = organisation.Name,
-                            Category = PersonnelProfileCategory,
-                            Content = photo,
-                            Description = "Profile Picture",
-                            //FileName = personnel.Fullname + ".jpg",
-                            PayrollId = personnelId.ToString(),
-                            //EmployeeName = personnel.Fullname,
-                            CreatedBy = personnelId.ToString(),
-                            DocumentAttribute = new List<DocumentAttribute>
-                            {
-                                new DocumentAttribute
-                                {
-                                    Key = PersonnelPhotoKey,
-                                    Value = personnelId.ToString()
-                                }
-                            }
-                        });
-        }
+        //    //_documentServiceAPI.CreateDocument(
+        //    //            new Document
+        //    //            {
+        //    //                Product = organisation.Name,
+        //    //                Category = PersonnelProfileCategory,
+        //    //                Content = photo,
+        //    //                Description = "Profile Picture",
+        //    //                //FileName = personnel.Fullname + ".jpg",
+        //    //                PayrollId = personnelId.ToString(),
+        //    //                //EmployeeName = personnel.Fullname,
+        //    //                CreatedBy = personnelId.ToString(),
+        //    //                DocumentAttribute = new List<DocumentAttribute>
+        //    //                {
+        //    //                    new DocumentAttribute
+        //    //                    {
+        //    //                        Key = PersonnelPhotoKey,
+        //    //                        Value = personnelId.ToString()
+        //    //                    }
+        //    //                }
+        //    //            });
+        //}
 
         public ValidationResult<AbsenceType> UpdateAbsenceType(int organisationId, AbsenceType absenceType)
         {

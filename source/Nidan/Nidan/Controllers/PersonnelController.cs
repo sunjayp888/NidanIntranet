@@ -216,7 +216,7 @@ namespace Nidan.Controllers
                         {
                             fileData = binaryReader.ReadBytes(file.ContentLength);
                         }
-                        NidanBusinessService.UploadPhoto(UserOrganisationId, id.Value,  fileData);
+                        //NidanBusinessService.UploadPhoto(UserOrganisationId, id.Value,  fileData);
                     }
                 }
                 return this.JsonNet("");
